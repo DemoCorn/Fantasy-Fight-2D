@@ -45,15 +45,38 @@ public class MeleeWeapon : MonoBehaviour
         {
             Weapon.SetActive(true);
             Invoke("StopAttack", 0.5f);
-            
-            canAttack = false;
             StartCooldown(2.0f);
         }
     }
 
+    /// <summary>
+    /// Start a cooldown for basic attack and adds a stack, if there are no stacks of cooldown basic attack is reenabled.
+    /// </summary>
+    /// <param name="fCooldownTime"> how long the cooldown is in seconds</param>
     public void StartCooldown(float fCooldownTime)
     {
         nCooldownStacks++;
+        canAttack = false;
+        Invoke("EndCooldown", fCooldownTime);
+    }
+
+    /// <summary>
+    /// Adds a cooldown stack without starting a cooldown, used for infinitely long cooldowns while a certain action takes place.
+    /// Use in conjuction with StartCooldownWithoutStack
+    /// </summary>
+    public void AddCooldownStack()
+    {
+        nCooldownStacks++;
+        canAttack = false;
+    }
+
+    /// <summary>
+    /// Start a cooldown for basic attack without adding a cooldown stack.
+    /// Use in conjunction with AddCooldownStack
+    /// </summary>
+    /// <param name="fCooldownTime"> how long the cooldown is in seconds</param>
+    public void StartCooldownWithoutStack(float fCooldownTime)
+    {
         Invoke("EndCooldown", fCooldownTime);
     }
 
