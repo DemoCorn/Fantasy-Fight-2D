@@ -7,6 +7,7 @@ public class MeleeWeapon : MonoBehaviour
 {
     [SerializeField] private GameObject Weapon;
     [SerializeField] private Transform pivotTransform;
+    [SerializeField] private Animator animationController;
 
     private int nCooldownStacks;
     private bool canAttack = true;
@@ -44,9 +45,16 @@ public class MeleeWeapon : MonoBehaviour
         if (Input.GetButtonDown("Swipe") && canAttack)
         {
             Weapon.SetActive(true);
+            PlaySwing(0.5f);
             Invoke("StopAttack", 0.5f);
             StartCooldown(2.0f);
         }
+    }
+
+    void PlaySwing(float length = 1.0f)
+    {
+        animationController.speed = 1.0f/length;
+        animationController.SetTrigger("Swing");
     }
 
     /// <summary>
@@ -90,5 +98,9 @@ public class MeleeWeapon : MonoBehaviour
         }
     }
 
-    void StopAttack() { Weapon.SetActive(false); }
+    void StopAttack() 
+    { 
+        Weapon.SetActive(false);
+        animationController.ResetTrigger("Swing");
+    }
 }
